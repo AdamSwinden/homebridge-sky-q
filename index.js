@@ -27,14 +27,15 @@ SkyQAccessory.prototype = {
 	setPowerState: function(powerOn, callback) {
 
 		var log = this.log;
+		var name = this.name;
 
-		log("Sending on command to '" + this.name + "'...");
+		log("Sending on command to '" + name + "'...");
 
 		this.skyQ.press('power', function(error) {
 
 			if (error) {
 
-				log('Failed to turn on ' + this.name + '. ' + error);
+				log('Failed to turn on ' + name + '. ' + error);
 			}
 
 			callback();
