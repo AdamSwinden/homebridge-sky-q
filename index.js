@@ -17,7 +17,7 @@ function SkyQAccessory(log, config, api) {
 	this.config = config;
 	this.name = config.name || 'Sky Q';
 
-	var remoteControl = new SkyRemote(config.ipAddress, SkyRemote.SKY_Q);
+	var remoteControl = new SkyRemote(config.ipAddress);
 	this.skyQ = remoteControl;
 }
 
