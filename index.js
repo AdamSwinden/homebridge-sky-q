@@ -9,7 +9,7 @@ module.exports = function(homebridge) {
 	Accessory = homebridge.platformAccessory;
 	Service = homebridge.hap.Service;
 	Characteristic = homebridge.hap.Characteristic;
-	homebridge.registerAccessory("homebridge-sky-q", "SkyQ", SkyQAccessory);
+	homebridge.registerAccessory("homebridge-sky-q-play", "SkyQPlay", SkyQAccessory);
 };
 
 function SkyQAccessory(log, config, api) {
@@ -17,6 +17,15 @@ function SkyQAccessory(log, config, api) {
 	this.log = log;
 	this.config = config;
 	this.name = config.name || 'Sky Q';
+
+	if (this.config.cmd) {
+
+		this.cmd = JSON.parse("[" + this.config.cmd + "]");
+	} else {
+
+		this.cmd = 'power';
+		this.stateful = true;
+	}
 
 	var remoteControl = new SkyRemote(config.ipAddress);
 	var boxCheck = new SkyQCheck({ip:config.ipAddress})
@@ -32,16 +41,22 @@ SkyQAccessory.prototype = {
 		var log = this.log;
 		var name = this.name;
 
-		log("Sending on command to '" + name + "'...");
+		log('Sending "' + this.cmd + '" command to ' + name + '...');
 
-		this.skyQ.press('power', function(error) {
+		this.skyQ.press(this.cmd, function(error) {
 
 			if (error) {
 
-				log('Failed to turn on ' + name + '. ' + error);
+				log('Failed to send cmd ' + name + '. ' + error);
 			}
 
-			callback();
+			if (this.stateful) {	
+
+				callback();
+			} else {
+
+				callback(new Error(1)); //Only way to keep the switch from turning on/off
+			}
 		});
 	},
 
@@ -53,24 +68,33 @@ SkyQAccessory.prototype = {
 	},
 
 	getState: function(callback) {
-		this.box.getPowerState().then(isOn=>{
-  		if (isOn) {
-		    this.log(this.name + " is on :-)")
-		  } else {
-		    this.log(this.name + " is in standby :-(")
-		  }
-		  callback(null, isOn);
-		}).catch(err=>{
-		  this.log("Unable to determine power state")
-		  this.log("Perhaps looking at this error will help you figure out why" + err)
-		  callback(err || new Error('Error getting state of ' + this.name));
-		})
+		if (this.stateful) {
+
+			this.box.getPowerState().then(isOn=>{
+	  		if (isOn) {
+
+			    this.log(this.name + " is on :-)")
+			  } else {
+
+			    this.log(this.name + " is in standby :-(")
+			  }
+			  callback(null, isOn);
+
+			}).catch(err=>{
+
+			  this.log("Unable to determine power state")
+			  this.log("Perhaps looking at this error will help you figure out why" + err)
+			  callback(err || new Error('Error getting state of ' + this.name));
+			})
+		} else {
+
+		  callback(null, 0);
+		}
 	},
 
 	getServices: function() {
 
 		var switchService = new Service.Switch(this.name);
-		
 
 		var characteristic = switchService.getCharacteristic(Characteristic.On).on('set', this.setPowerState.bind(this));
 
