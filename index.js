@@ -20,13 +20,15 @@ function SkyQAccessory(log, config, api) {
 
 	if (this.config.cmd) {
 
-		this.cmd = JSON.parse("[" + this.config.cmd + "]");
+		this.cmd = this.config.cmd.split(',');
 	} else {
 
 		this.cmd = 'power';
 		this.stateful = true;
 	}
-
+	if (this.cmd == 'power') {
+                this.stateful = true;
+        }
 	var remoteControl = new SkyRemote(config.ipAddress);
 	var boxCheck = new SkyQCheck({ip:config.ipAddress})
 	this.skyQ = remoteControl;
