@@ -19,14 +19,8 @@ function SkyQAccessory(log, config, api) {
 	this.name = config.name || 'Sky Q';
 	this.stateful = false;
 
-	if (this.config.cmd) {
+	if (this.config.cmd === 'power' || !this.config.cmd) {
 
-		this.cmd = this.config.cmd.split(',');
-	} else {
-
-		this.cmd = 'power';
-	}
-	if (this.cmd == 'power') {
 		this.stateful = true;
 	}
 
@@ -44,7 +38,15 @@ SkyQAccessory.prototype = {
 		var log = this.log;
 		var name = this.name;
 		var stateful = this.stateful;
+		
+		if (this.config.cmd) {
 
+			this.cmd = this.config.cmd.split(',');
+		} else {
+
+			this.cmd = 'power';
+		}
+		
 		log('Sending "' + this.cmd + '" command to ' + name + '...');
 
 		this.skyQ.press(this.cmd, function(error) {
@@ -54,7 +56,7 @@ SkyQAccessory.prototype = {
 				log('Failed to send cmd ' + name + '. ' + error);
 			}
 
-			if (stateful == true) {	
+			if (stateful === true) {	
 
 				callback();
 			} else {
