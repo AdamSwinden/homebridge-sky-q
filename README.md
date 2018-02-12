@@ -1,6 +1,6 @@
 # homebridge-sky-q
 
-[Homebridge](https://github.com/nfarina/homebridge) plugin to turn on/off a Sky Q box.
+[Homebridge](https://github.com/nfarina/homebridge) plugin to turn on/off a Sky Q box and send custom commands (such as channel shortcuts or record)
 
 ## Installation
 
