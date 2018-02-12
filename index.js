@@ -17,6 +17,7 @@ function SkyQAccessory(log, config, api) {
 	this.log = log;
 	this.config = config;
 	this.name = config.name || 'Sky Q';
+	this.stateful = false;
 
 	if (this.config.cmd) {
 
@@ -24,11 +25,11 @@ function SkyQAccessory(log, config, api) {
 	} else {
 
 		this.cmd = 'power';
-		this.stateful = true;
 	}
 	if (this.cmd == 'power') {
-                this.stateful = true;
-        }
+		this.stateful = true;
+	}
+
 	var remoteControl = new SkyRemote(config.ipAddress);
 	var boxCheck = new SkyQCheck({ip:config.ipAddress})
 	this.skyQ = remoteControl;
@@ -42,6 +43,7 @@ SkyQAccessory.prototype = {
 
 		var log = this.log;
 		var name = this.name;
+		var stateful = this.stateful;
 
 		log('Sending "' + this.cmd + '" command to ' + name + '...');
 
@@ -52,7 +54,7 @@ SkyQAccessory.prototype = {
 				log('Failed to send cmd ' + name + '. ' + error);
 			}
 
-			if (this.stateful) {	
+			if (stateful == true) {	
 
 				callback();
 			} else {
