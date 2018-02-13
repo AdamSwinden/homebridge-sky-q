@@ -21,17 +21,12 @@ Add this to your `~/.homebridge/config.json` as an accessory:
 }
 ```
 
-## Advnaced Configuration
+## Advanced Configuration
 
-Can be used to send other commands to the Sky Q box also, for example a shortcut to channel 101:
-```
-{
-	"accessory": "SkyQ",
-	"name": "Sky CH101",
-	"ipAddress": "<Sky Q Box IP Address>",
-	"cmd": "1,0,1"
-}
-```
+#cmd option
+
+Can be used to send other commands to the Sky Q box also, for example a shortcut to channel 101 or to record what is currently being watched.
+
 When using the "cmd" option (and when it is set to anything other than "power") the switch state in the Home app will no longer toggle on/off (as it doesn't make sense for a shortuct switch to be on/off), it will remain in the off state and may also present an (!) error in the Home app as a result - this is expected behaviour.
 
 The full list of available commands is here:
@@ -52,16 +47,29 @@ The full list of available commands is here:
 
 `0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
 
+
+
+#delayed option
+
 There is a special feature to work around a Samsung Soundbar HDMI CEC bug on startup (where it flips off of the HDMI channel ~30 seconds after turning on). With the "delayed" option set true, and when NOT using the "cmd" option, when the Sky Q box is instructed to switch on, after 20 seconds it will send the "sky" button command as well to re-send the HDMI CEC signal and force the Soundbar to stay on that channel.
+
+
+
+#autoOn option
+
+When using the "cmd" option, if the box is off, when AutoOn is true it will switch the Sky Q box on before sending the cmd. Also works in conjunction with the "delayed" function if enabled.
+
+
 ```
 {
 	"accessory": "SkyQ",
 	"name": "Sky Q Power",
 	"ipAddress": "<Sky Q Box IP Address>"
-	"delayed": true
+	"cmd": "1,0,1",
+	"delayed": true,
+	"autoOn": true
 }
 ```
-
 
 ## Getting your Sky Q Box's IP address
 
