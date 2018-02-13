@@ -9,7 +9,7 @@ module.exports = function(homebridge) {
 	Accessory = homebridge.platformAccessory;
 	Service = homebridge.hap.Service;
 	Characteristic = homebridge.hap.Characteristic;
-	homebridge.registerAccessory("homebridge-sky-q-play", "SkyQPlay", SkyQAccessory);
+	homebridge.registerAccessory("homebridge-sky-q", "SkyQ", SkyQAccessory);
 };
 
 function SkyQAccessory(log, config, api) {
