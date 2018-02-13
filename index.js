@@ -149,7 +149,20 @@ SkyQAccessory.prototype = {
 
 		} else {
 	
-			sendCmd();
+			box.getPowerState().then(isOn=>{
+				if ((isOn && state === 'on') || (!isOn && state === 'off')) {
+					callback();
+					setTimeout(function() {
+						switchService.getCharacteristic(Characteristic.On).getValue(null, funcContext);
+					}, 1000);
+
+				} else {
+					sendCmd();
+				}
+			}).catch(err=>{
+				log("Unable to determine power state")
+				log("Perhaps looking at this error will help you figure out why" + err)
+			})
 		}
 
 	},
