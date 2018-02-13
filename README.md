@@ -23,7 +23,7 @@ Add this to your `~/.homebridge/config.json` as an accessory:
 
 ## Advanced Configuration
 
-#cmd option
+>cmd option
 
 Can be used to send other commands to the Sky Q box also, for example a shortcut to channel 101 or to record what is currently being watched.
 
@@ -49,13 +49,13 @@ The full list of available commands is here:
 
 
 
-#delayed option
+>delayed option
 
 There is a special feature to work around a Samsung Soundbar HDMI CEC bug on startup (where it flips off of the HDMI channel ~30 seconds after turning on). With the "delayed" option set true, and when NOT using the "cmd" option, when the Sky Q box is instructed to switch on, after 20 seconds it will send the "sky" button command as well to re-send the HDMI CEC signal and force the Soundbar to stay on that channel.
 
 
 
-#autoOn option
+>autoOn option
 
 When using the "cmd" option, if the box is off, when AutoOn is true it will switch the Sky Q box on before sending the cmd. Also works in conjunction with the "delayed" function if enabled.
 
