@@ -27,7 +27,7 @@ Add this to your `~/.homebridge/config.json` as an accessory:
 
 Can be used to send other commands to the Sky Q box also, for example a shortcut to channel 101 or to record what is currently being watched.
 
-When using the "cmd" option (and when it is set to anything other than "power") the switch state in the Home app will no longer toggle on/off (as it doesn't make sense for a shortuct switch to be on/off), it will remain in the off state and may also present an (!) error in the Home app as a result - this is expected behaviour.
+When using the "cmd" option (and when it is set to anything other than "power") the switch state in the Home app will always return to the off state (as it doesn't make sense for a shortuct switch to be on/off).
 
 The full list of available commands is here:
 
