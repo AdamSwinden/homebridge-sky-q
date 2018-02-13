@@ -33,8 +33,10 @@ function SkyQAccessory(log, config, api) {
 
 SkyQAccessory.prototype = {
 
-	setPowerState: function(powerOn, callback) {
+	setPowerState: function(powerOn, callback, context) {
 
+		let funcContext = 'fromSetPowerState';
+		var switchService = this.service;
 		var log = this.log;
 		var name = this.name;
 		var stateful = this.stateful;
@@ -78,7 +80,10 @@ SkyQAccessory.prototype = {
 
 				} else {
 
-					callback(new Error(1)); //Only way to keep the switch from turning on/off
+					callback();
+					setTimeout(function() {
+						switchService.getCharacteristic(Characteristic.On).getValue(null, funcContext);
+					}, 1000);
 				}
 			});
 		}
@@ -188,6 +193,8 @@ SkyQAccessory.prototype = {
 		var characteristic = switchService.getCharacteristic(Characteristic.On).on('set', this.setPowerState.bind(this));
 
 		characteristic.on('get', this.getState.bind(this));
+
+		this.service = switchService;
 
 		return [switchService];
 	}
