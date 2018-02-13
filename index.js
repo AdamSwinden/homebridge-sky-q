@@ -57,8 +57,8 @@ SkyQAccessory.prototype = {
 
 				if (stateful === true) {
 	
+					callback(); // Do this early or Siri moans it takes too long
 					if (state === 'on' && delayed === true) {
-
 						setTimeout(function() {
 
 							skyQ.press('sky', function(error) {
@@ -76,11 +76,11 @@ SkyQAccessory.prototype = {
 
 					}
 
-					callback();
 
 				} else {
-
-					callback();
+					if (!delayed === true) {
+						callback();
+					}
 					setTimeout(function() {
 						switchService.getCharacteristic(Characteristic.On).getValue(null, funcContext);
 					}, 1000);
@@ -116,6 +116,7 @@ SkyQAccessory.prototype = {
 					});
 					if (delayed === true) {
 						log("Delayed 'sky' press enabled");
+						callback(); // Do this early or Siri moans that it takes too long
 						setTimeout(function() {
 
 							skyQ.press(['sky','backup'], function(error) {
