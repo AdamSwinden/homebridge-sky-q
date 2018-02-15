@@ -70,6 +70,19 @@ When using the "cmd" option, if the box is off, when AutoOn is true it will swit
 	"autoOn": true
 }
 ```
+## Tips
+
+When creating a 'go to channel' type command, it is recommended you put 'backup,backup,backup' before the channel to ensure any menu/playing programme is quit before entering the number;
+
+```"cmd": "backup,backup,backup,1,0,1"```
+
+To play a specific program the search function works best, similar to above, be sure to do a 'search,search' to clear any preivous search info. This example searches for "pep" (Peppa Pig), goes right 3 times to allow time for the search to complete, selects it and moves down to 'More Like This' and then up 1 to 'Recordings', select, up a few times to ensure Series 1, right twice to get to 'Watch From Start' (to avoid playing from a random previous point) and select to play;
+
+```"cmd": "search,search,7,3,3,7,right,right,right,select,down,down,down,down,down,down,down,up,select,up,up,up,up,up,right,right,select"```
+
+If typing a word which requires 2 letters from the same number, split them with a couple of 'dud' key presses to let it time out, for example, "abc" would be;
+
+```"cmd": "search,search,2,red,red,2,2,red,red,2,2,2"```
 
 ## Getting your Sky Q Box's IP address
 
