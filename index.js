@@ -45,8 +45,15 @@ SkyQAccessory.prototype = {
 		var skyQ = this.skyQ;
 		var box = this.box;
 		
-		function sendCmd() {
+
+		function sendCmd(callBacked) {
 			log('Sending "' + cmd + '" command to ' + name + '...');
+
+			if (cmd.length > 6 && callBacked === false) {
+				// If it's a long command string that will take a while, immedately callback() to avoid Siri timeout
+				callBacked = true;	
+				callback();
+			}
 
 			skyQ.press(cmd, function(error) {
 
@@ -78,7 +85,7 @@ SkyQAccessory.prototype = {
 
 
 				} else {
-					if (!delayed === true) {
+					if (callBacked === false) {
 						callback();
 					}
 					setTimeout(function() {
@@ -101,7 +108,7 @@ SkyQAccessory.prototype = {
 				if (isOn) {
 
 					log(name + " is on :-)")
-					sendCmd();
+					sendCmd(false);
 				} else {
 
 					log(name + " is in standby :-(")
@@ -129,7 +136,7 @@ SkyQAccessory.prototype = {
 							});
 							setTimeout(function() {
 								
-								sendCmd();
+								sendCmd(true);
 
 							}, 1000); //Give the box a chance to get back to a channel before sending the cmd
 						}, 20000);
@@ -137,14 +144,15 @@ SkyQAccessory.prototype = {
 					
 						setTimeout(function() {
 
-							sendCmd();
+							sendCmd(false);
 
 						}, 3000); //Give the box a chance to start up before we send the cmd
 					}
 				}
 			}).catch(err=>{
-				log("Unable to determine power state")
+				log("Unable to determine power state 1")
 				log("Perhaps looking at this error will help you figure out why" + err)
+			  	callback(err || new Error('Error getting state of ' + this.name));
 			})
 
 		} else {
@@ -157,11 +165,12 @@ SkyQAccessory.prototype = {
 					}, 1000);
 
 				} else {
-					sendCmd();
+					sendCmd(false);
 				}
 			}).catch(err=>{
-				log("Unable to determine power state")
+				log("Unable to determine power state 2")
 				log("Perhaps looking at this error will help you figure out why" + err)
+			  	callback(err || new Error('Error getting state of ' + this.name));
 			})
 		}
 
@@ -190,7 +199,7 @@ SkyQAccessory.prototype = {
 
 			}).catch(err=>{
 
-			  this.log("Unable to determine power state")
+			  this.log("Unable to determine power state 3")
 			  this.log("Perhaps looking at this error will help you figure out why" + err)
 			  callback(err || new Error('Error getting state of ' + this.name));
 			})
