@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/AdamSwinden/homebridge-sky-q#readme",
   "dependencies": {
-    "sky-remote": "^1.1.0"
+    "sky-remote": "^1.1.0",
+    "sky-q": "^1.0.2"
   },
   "engines": {
     "node": ">=0.12.0",
