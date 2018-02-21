@@ -87,4 +87,4 @@ If typing a word which requires 2 letters from the same number, split them with 
 ## Getting your Sky Q Box's IP address
 
 On your Sky Q Box, go to Settings > Setup > Network > Advanced Settings > IP address.
-Note that it is advisable to assign your Sky Q box a reserved IP via the DHCP settings on your router. Without doing this your Sky Q box will liekly get a different IP when your router is ever rebooted.
+Note that it is advisable to assign your Sky Q box a reserved IP via the DHCP settings on your router. Without doing this your Sky Q box will likely get a different IP when your router is ever rebooted.
